@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features spread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0658fa;
+    --blue-dark: #0a0756;
+    --purple: #8000ff;
+    --black: #000000;
+    --bg-grey: #ecedf0;
+    --white: #ffffff;
+    --text-grey: #7f7f7f;
+    --border: #d4d6dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #d0d0d0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Spread shell ──────────────────────────────────────────── */
+
+  .spread-wrapper {
+    width: 1588px;
+    height: 1123px;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+
+  .spread {
+    width: 1588px;
+    height: 1123px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ─── Both pages — white ────────────────────────────────────── */
+
+  .page-left, .page-right {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ─── Left page header ──────────────────────────────────────── */
+
+  /* Pointer: 9pt→12px, leading 10.8pt→14.4px
+     Source: x 56.818pt→75.78px, y 56.693pt→75.57px */
+  .left-pointer {
+    position: absolute;
+    left: 75.78px;
+    top: 75.57px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 14.4px;
+  }
+
+  /* Headline: 26pt→34.66px, leading 32pt→42.66px
+     Source: x 56.693pt→75.57px, y 79.384pt→105.82px, w 287.717pt→383.52px */
+  .left-headline {
+    position: absolute;
+    left: 75.57px;
+    top: 105.82px;
+    width: 383.52px;
+    font-size: 34.66px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 42.66px;
+  }
+
+  /* Module badge
+     Source: x 455.156pt→606.72px, y 56.693pt→75.57px, w/h 93.277pt→124.34px */
+  .module-badge {
+    position: absolute;
+    left: 606.72px;
+    top: 75.57px;
+    width: 124.34px;
+    height: 124.34px;
+  }
+
+  .module-badge img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ─── Feature elements — all absolutely positioned ─────────── */
+
+  /* Shared image style — w 229.606pt→306.07px, h 194.803pt→259.67px */
+  .feat-img {
+    position: absolute;
+    width: 306.07px;
+    height: 259.67px;
+    background: #ebebf1;
+    overflow: hidden;
+  }
+
+  .feat-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .drop-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-grey);
+    pointer-events: none;
+  }
+
+  /* Shared text box style */
+  .feat-text { position: absolute; }
+
+  /* Title: 19pt→25.33px, leading 22.8pt→30.4px
+     w 226.661pt→302.14px */
+  .feat-title {
+    font-size: 25.33px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 30.4px;
+    width: 302.14px;
+  }
+
+  /* Body: 11pt→14.66px, leading 15pt→20px, same text box as title */
+  .feat-body {
+    font-size: 14.66px;
+    font-weight: 400;
+    color: var(--text-grey);
+    line-height: 20px;
+    width: 302.14px;
+    margin-top: 20px;
+  }
+
+  /* ─── Row 1 (left page) — aligned to right page row 4 ─────── */
+  .feat-img-1  { left: 75.57px;  top: 441.90px; }
+  .feat-text-1 { left: 415.79px; top: 441.90px; }
+
+  /* ─── Row 2 (left page) — aligned to right page row 5 ─────── */
+  .feat-img-2  { left: 75.57px;  top: 771.43px; }
+  .feat-text-2 { left: 416.12px; top: 771.43px; }
+
+  /* ─── Row 3 (right page) — TBD ─────────────────────────────── */
+  .feat-img-3  { left: 411.67px; top: 112.07px; }
+  .feat-text-3 { left: 75.57px;  top: 112.07px; }
+
+  /* ─── Row 4 (right page) — TBD ─────────────────────────────── */
+  .feat-img-4  { left: 411.67px; top: 441.90px; }
+  .feat-text-4 { left: 75.57px;  top: 441.90px; }
+
+  /* ─── Row 5 (right page) ─────────────────────────────────── */
+  .feat-img-5  { left: 411.67px; top: 771.43px; }
+  .feat-text-5 { left: 75.57px;  top: 771.43px; }
+
+  /* ─── Divider lines ─────────────────────────────────────────── */
+
+  .feat-divider {
+    position: absolute;
+    width: 642.17px;
+    height: 0.33px;
+    background: var(--black);
+  }
+
+  /* Left page dividers — aligned to right page rows 4 & 5 */
+  .feat-divider-1 { left: 75.57px; top: 405.44px; }
+  .feat-divider-2 { left: 75.57px; top: 735.32px; }
+
+  /* Right page dividers */
+  .feat-divider-3 { left: 75.57px; top:  75.57px; }
+  .feat-divider-4 { left: 75.57px; top: 405.44px; }
+  .feat-divider-5 { left: 75.57px; top: 735.32px; }
+
+  /* ─── Footer ────────────────────────────────────────────────── */
+
+  /* Sits on page-right, same coordinates as other spreads */
+  .right-footer {
+    position: absolute;
+    left: 421.49px;
+    top: 1052.47px;
+    width: 296.82px;
+    height: 32.13px;
+    display: flex;
+    align-items: center;
+    font-size: 10.67px;
+    font-weight: 400;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
+  }
+
+  .footer-label  { color: #c2c2c2; }
+  .footer-module { color: var(--black); }
+
+  /* ─── Contenteditable ───────────────────────────────────────── */
+
+  [contenteditable]:hover {
+    outline: 1px dashed var(--border);
+    border-radius: 2px;
+    cursor: text;
+  }
+  [contenteditable]:focus {
+    outline: 1px dashed var(--blue);
+    border-radius: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="spread-wrapper" id="spreadWrapper">
+  <div class="spread">
+
+    <!-- ── Left page ─────────────────────────────────────────── -->
+    <div class="page-left">
+
+      <div class="left-pointer" contenteditable="true">ISMS features</div>
+      <div class="left-headline" contenteditable="true">Stay ahead of<br>emerging threats</div>
+
+      <!-- Module badge -->
+      <div class="module-badge">
+        <img src="../../../images/modules/module-logos/Risk/ISMS.svg" alt="ISMS">
+      </div>
+
+      <!-- Feature row 1 -->
+      <div class="feat-divider feat-divider-1"></div>
+      <div class="feat-img feat-img-1"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-1">
+        <div class="feat-title" contenteditable="true">Full policy control</div>
+        <div class="feat-body" contenteditable="true">From regulation to policy to action, [Your Company] lets you define, connect, implement, and monitor security policies and controls, aligning with your organisational objectives and regulatory requirements.</div>
+      </div>
+
+      <!-- Feature row 2 -->
+      <div class="feat-divider feat-divider-2"></div>
+      <div class="feat-img feat-img-2"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-2">
+        <div class="feat-title" contenteditable="true">Intelligent asset management</div>
+        <div class="feat-body" contenteditable="true">Maintain an inventory of information assets and categorise based on sensitivity and criticality. Perform CIAA assessments, issue questionnaires to owners, suggest relevant controls and scenario tests, apply automated profiling, and get oversight of supporting processes and relationships to risks, controls, threats, incidents and third-party security assurance.</div>
+      </div>
+
+    </div><!-- /page-left -->
+
+    <!-- ── Right page ────────────────────────────────────────── -->
+    <div class="page-right">
+
+      <!-- Feature row 3 -->
+      <div class="feat-divider feat-divider-3"></div>
+      <div class="feat-img feat-img-3"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-3">
+        <div class="feat-title" contenteditable="true">Scenario testing</div>
+        <div class="feat-body" contenteditable="true">Maintain a consolidated register of information security scenarios, including organisation-specific tests based on templates from our scenario library. Assess and record outcomes, actions and remediation, and link scenarios to related IT assets, incidents, products and services from your Operational Resilience data.</div>
+      </div>
+
+      <!-- Feature row 4 -->
+      <div class="feat-divider feat-divider-4"></div>
+      <div class="feat-img feat-img-4"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-4">
+        <div class="feat-title" contenteditable="true">Integrated assurance</div>
+        <div class="feat-body" contenteditable="true">With live data pulled from across your enterprise, including Enterprise Risk Management, Operational Resilience, and Third-Party Risk records, you can trust that your information security processes comply with internal policies and regulatory standards.</div>
+      </div>
+
+      <!-- Feature row 5 -->
+      <div class="feat-divider feat-divider-5"></div>
+      <div class="feat-img feat-img-5"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-5">
+        <div class="feat-title" contenteditable="true">Feature title</div>
+        <div class="feat-body" contenteditable="true">Feature description goes here.</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="right-footer">
+        <span class="footer-label" contenteditable="true">Solution Brief I&nbsp;</span><span class="footer-module" contenteditable="true">ISMS Solutions</span>
+      </div>
+
+    </div><!-- /page-right -->
+
+  </div><!-- /spread -->
+</div><!-- /spread-wrapper -->
+
+<script>
+  // Responsive scaling
+  function scaleSpread() {
+    const s = Math.min(window.innerWidth / 1588, window.innerHeight / 1123) * 0.92;
+    document.getElementById('spreadWrapper').style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', scaleSpread);
+  scaleSpread();
+
+  document.querySelectorAll('.feat-img').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.outline = '2px dashed var(--blue)'; });
+    zone.addEventListener('dragleave', () => { zone.style.outline = ''; });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.style.outline = '';
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        let img = zone.querySelector('img');
+        if (!img) { img = document.createElement('img'); zone.appendChild(img); }
+        img.src = ev.target.result;
+        const label = zone.querySelector('.drop-label');
+        if (label) label.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  let _fileHandle = null;
+  document.addEventListener('keydown', async e => {
+    if (!(e.code === 'KeyS' && e.altKey && (e.metaKey || e.ctrlKey))) return;
+    e.preventDefault();
+    try {
+      if (!_fileHandle) {
+        _fileHandle = await window.showSaveFilePicker({
+          suggestedName: decodeURIComponent(window.location.pathname.split("/").pop()) || "index.html",
+          types: [{ description: 'HTML file', accept: { 'text/html': ['.html'] } }]
+        });
+      }
+      const writable = await _fileHandle.createWritable();
+      await writable.write(document.documentElement.outerHTML);
+      await writable.close();
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Save failed:', err);
+    }
+  });
+</script>
+
+</body>
+</html>

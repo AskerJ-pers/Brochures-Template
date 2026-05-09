@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benefits spread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0658fa;
+    --blue-dark: #0a0756;
+    --purple: #8000ff;
+    --black: #000000;
+    --bg-grey: #ecedf0;
+    --white: #ffffff;
+    --text-grey: #7f7f7f;
+    --border: #d4d6dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #d0d0d0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Spread shell (2× A4 side-by-side) ────────────────── */
+
+  .spread-wrapper {
+    width: 1588px;
+    height: 1123px;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+
+  .spread {
+    width: 1588px;
+    height: 1123px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ─── Left page — white ─────────────────────────────────── */
+
+  .page-left {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    background: var(--white);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Logo — from InDesign source (pt × 1.333 = px)
+     Source: w 185.322pt → 247.04px, h 31.883pt → 42.50px
+             x 56.555pt → 75.41px, y 133.055pt → 177.36px */
+  .logo-left {
+    position: absolute;
+    left: 75.41px;
+    top: 177.36px;
+    line-height: 0;
+  }
+
+  .logo-left svg {
+    width: 247.04px;
+    height: 42.50px;
+  }
+
+  /* Horizontal rule — from InDesign source (pt × 1.333 = px)
+     Source: stroke 0.25pt → 0.5px (hairline min), colour black
+             x 56.973pt → 75.95px, y 265.457pt → 353.95px */
+  .rule-left {
+    position: absolute;
+    left: 75.95px;
+    right: 75.95px;
+    top: 353.95px;
+    height: 0.5px;
+    background: var(--black);
+  }
+
+  /* Title block — subtitle + headline share one InDesign text box.
+     Source: x 56.973pt → 75.95px, y 292.511pt → 389.92px, w 489.833pt → 653.14px */
+  .left-title-block {
+    position: absolute;
+    left: 75.95px;
+    top: 389.92px;
+    width: 653.14px;
+  }
+
+  /* Main headline — from InDesign source (pt × 1.333 = px)
+     Source: size 26pt → 34.66px, leading 32pt → 42.66px, colour black */
+  .left-headline {
+    font-size: 34.66px;
+    font-weight: 400;
+    color: var(--black);
+    line-height: 42.66px;
+    display: block;
+  }
+
+  /* Body paragraph — same text box as headline in InDesign.
+     Source: size 14pt → 18.66px, leading 22pt → 29.33px, colour #303031
+     margin-top simulates one blank line at body leading (29.33px) */
+  .left-body {
+    display: block;
+    margin-top: 29.33px;
+    font-size: 18.66px;
+    font-weight: 400;
+    color: #303031;
+    line-height: 29.33px;
+  }
+
+  /* Product screenshot zone — full image, no cropping. The page-left overflow:hidden
+     clips anything that extends beyond the page edge. Width controls scale; height
+     is determined by the image's natural aspect ratio. */
+  .screenshot-zone {
+    position: absolute;
+    left: -103px;
+    top: 399px;
+    width: 1035px;
+    background: transparent;
+  }
+
+  .screenshot-zone img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Resize handles — shown on hover */
+  .resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--blue);
+    border: 2px solid #fff;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 20;
+  }
+  .screenshot-zone:hover .resize-handle { opacity: 1; }
+  .resize-handle.nw { top: -6px;  left: -6px;  cursor: nw-resize; }
+  .resize-handle.ne { top: -6px;  right: -6px; cursor: ne-resize; }
+  .resize-handle.sw { bottom: -6px; left: -6px;  cursor: sw-resize; }
+  .resize-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+
+  .screenshot-drop-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-grey);
+    text-align: center;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .screenshot-drop-label svg {
+    stroke: var(--border);
+    stroke-width: 1.5;
+    fill: none;
+    width: 32px;
+    height: 32px;
+  }
+
+  /* ─── Right page — dark navy ────────────────────────────── */
+
+  .page-right {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    background: var(--blue-dark);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* "Delivering business benefits" heading
+     Source: x (651.844 − 595.28)pt → 75.40px, y 128.976pt → 171.97px
+             size 26pt → 34.66px, leading 32pt → 42.66px, colour #ffffff */
+  .right-headline {
+    position: absolute;
+    left: 75.40px;
+    top: 171.97px;
+    font-size: 34.66px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 42.66px;
+  }
+
+  /* All-caps pointer label
+     Source: x (651.969 − 595.28)pt → 75.57px, y 224.979pt → 299.9px
+             size 9pt → 12px, leading 10.8pt → 14.4px, colour #ffffff */
+  .right-pointer {
+    position: absolute;
+    left: 75.57px;
+    top: 299.9px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14.4px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── Benefits grid — each cell absolutely positioned from InDesign source ── */
+
+  /* Each cell is anchored at its icon's X/Y from InDesign.
+     The text block starts 52.03px below the cell top (title Y − icon Y converted). */
+  .benefit-cell {
+    position: absolute;
+  }
+
+  /* Blue divider line above each cell
+     Source: w 150.696pt→200.88px, stroke 1pt→1.33px, colour #006cff
+             sits 10.29px above the icon (cell top − line top: 364.24 − 353.95px) */
+  .benefit-cell::before {
+    content: '';
+    position: absolute;
+    top: -10.29px;
+    left: 0;
+    width: 200.88px;
+    height: 1.33px;
+    background: #006cff;
+  }
+
+  .benefit-icon {
+    display: block;
+    width: 30.96px;
+    height: 30.96px;
+    margin-top: 6px;
+  }
+
+  /* Lucide replaces <i> with <svg> — always target svg */
+  .benefit-cell svg {
+    width: 30.96px;
+    height: 30.96px;
+    stroke: rgba(255, 255, 255, 0.8);
+    stroke-width: 1.75px;
+    fill: none;
+  }
+
+  .benefit-text {
+    margin-top: 15.07px; /* centred: equal gaps above/below icon between divider and title */
+    width: 200.71px;     /* 150.571pt × 1.333 */
+    max-height: 144.85px; /* 108.661pt × 1.333 */
+    overflow: hidden;
+  }
+
+  /* Title: 13pt → 17.33px, leading 15.6pt → 20.8px */
+  .benefit-title {
+    font-size: 17.33px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 20.8px;
+  }
+
+  /* Body: same text box as title — 10pt → 13.33px, leading 12pt → 16px */
+  .benefit-body {
+    font-size: 13.33px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 16px;
+    margin-top: 8px;
+  }
+
+  /* ─── Footer bar ─────────────────────────────────────────── */
+  /* Source: x (911.464−595.28)pt→421.49px, y 789.449pt→1052.47px
+             w 222.52pt→296.82px, h 24.094pt→32.13px
+             size 8pt→10.67px, leading 9.6pt→12.8px, weight 400 */
+
+  .right-footer {
+    position: absolute;
+    left: 421.49px;
+    top: 1052.47px;
+    width: 296.82px;
+    height: 32.13px;
+    display: flex;
+    align-items: center;
+    font-size: 10.67px;
+    font-weight: 400;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
+  }
+
+  .footer-label {
+    color: #c2c2c2;
+  }
+
+  .footer-module {
+    color: #ffffff;
+  }
+
+  /* ─── Contenteditable indicators ────────────────────────── */
+
+  [contenteditable]:hover {
+    outline: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    cursor: text;
+  }
+
+  [contenteditable]:focus {
+    outline: 1px dashed var(--blue);
+    border-radius: 2px;
+  }
+
+  /* Override for light panel — use standard border colour */
+  .page-left [contenteditable]:hover {
+    outline: 1px dashed var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="spread-wrapper" id="spreadWrapper">
+  <div class="spread">
+
+    <!-- ── Left page — white ──────────────────────────────── -->
+    <div class="page-left">
+
+      <div class="logo-left"></div>
+
+      <div class="rule-left"></div>
+
+      <div class="left-title-block">
+        <span class="left-headline" contenteditable="true">A bold statement about what this module enables for your organisation</span>
+        <span class="left-body" contenteditable="true">A short introductory paragraph that sets context for the module. Two to three sentences summarising the core problem it solves and the value it delivers. Keep this concise — the headline carries the weight.</span>
+      </div>
+
+      <!-- Product screenshot zone — replace src with module-specific screenshot when producing a brochure -->
+      <div class="screenshot-zone" id="screenshotZone">
+        <img id="screenshotImg" src="../../../images/product/dashboards-double-tablet-alternate.png" alt="Product screenshot">
+        <div class="resize-handle nw" data-corner="nw"></div>
+        <div class="resize-handle ne" data-corner="ne"></div>
+        <div class="resize-handle sw" data-corner="sw"></div>
+        <div class="resize-handle se" data-corner="se"></div>
+        <div class="screenshot-drop-label" id="screenshotLabel" style="display:none">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          Drop product screenshot here
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Right page — dark navy ─────────────────────────── -->
+    <div class="page-right">
+
+      <div class="right-headline" contenteditable="true">Delivering business benefits</div>
+      <div class="right-pointer" contenteditable="true">Module name</div>
+
+      <!-- Benefits grid — each cell absolutely positioned from InDesign source coordinates -->
+      <!-- Columns: col1 left=75.57px, col2 left=294.39px, col3 left=518.37px           -->
+      <!-- Rows (icon top): row1=364.24px, row2=600.05px, row3=835.52px                  -->
+
+      <!-- Row 1, Col 1 -->
+      <div class="benefit-cell" style="left:75.57px; top:364.24px;">
+        <i data-lucide="shield-check" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title one</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 1, Col 2 -->
+      <div class="benefit-cell" style="left:294.39px; top:364.24px;">
+        <i data-lucide="zap" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title two</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 1, Col 3 -->
+      <div class="benefit-cell" style="left:518.37px; top:364.24px;">
+        <i data-lucide="bar-chart-2" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title three</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 2, Col 1 -->
+      <div class="benefit-cell" style="left:75.57px; top:600.05px;">
+        <i data-lucide="layers" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title four</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 2, Col 2 -->
+      <div class="benefit-cell" style="left:294.39px; top:600.05px;">
+        <i data-lucide="refresh-cw" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title five</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 2, Col 3 -->
+      <div class="benefit-cell" style="left:518.37px; top:600.05px;">
+        <i data-lucide="users" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title six</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 3, Col 1 -->
+      <div class="benefit-cell" style="left:75.57px; top:835.52px;">
+        <i data-lucide="lock" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title seven</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 3, Col 2 -->
+      <div class="benefit-cell" style="left:294.39px; top:835.52px;">
+        <i data-lucide="trending-up" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title eight</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Row 3, Col 3 -->
+      <div class="benefit-cell" style="left:518.37px; top:835.52px;">
+        <i data-lucide="check-circle" class="benefit-icon"></i>
+        <div class="benefit-text">
+          <div class="benefit-title" contenteditable="true">Benefit title nine</div>
+          <div class="benefit-body" contenteditable="true">Short description of the benefit and why it matters to the user.</div>
+        </div>
+      </div>
+
+      <!-- Footer bar -->
+      <div class="right-footer">
+        <span class="footer-label" contenteditable="true">Solution Brief I&nbsp;</span><span class="footer-module" contenteditable="true">Module Solutions</span>
+      </div>
+
+    </div><!-- /page-right -->
+
+  </div><!-- /spread -->
+</div><!-- /spread-wrapper -->
+
+<!-- Logo SVG templates -->
+<template id="logo-svg"><svg xmlns="http://www.w3.org/2000/svg" width="186" height="32" fill="none" viewBox="0 0 186 32"><path fill="#0658fa" d="M18.07 5.179 9.035 0 0 5.179l9.035 5.179 9.035 5.179 9.036-5.18z"/><path fill="url(#a)" d="M18.07 5.179 9.035 0 0 5.179l9.035 5.179 9.035 5.179 9.036-5.18z" opacity=".3" style="mix-blend-mode:multiply"/><path fill="#0658fa" d="m18.07 15.537-9.035 5.178v10.358l9.035-5.179 9.036-5.178V10.357z"/><path fill="#000" d="M36.142 8.237h4.69a7.1 7.1 0 0 1 2.585.454 6.1 6.1 0 0 1 2.027 1.264 5.6 5.6 0 0 1 1.313 1.898c.313.748.47 1.551.463 2.362v.035a6 6 0 0 1-.463 2.37c-.3.72-.747 1.37-1.313 1.908a6.3 6.3 0 0 1-2.027 1.269 7 7 0 0 1-2.586.463h-4.69zm4.69 9.636a4.1 4.1 0 0 0 1.477-.258 3.2 3.2 0 0 0 1.142-.738c.319-.326.57-.711.74-1.135a3.8 3.8 0 0 0 .264-1.46v-.033a3.9 3.9 0 0 0-.264-1.462 3.5 3.5 0 0 0-.74-1.15 3.2 3.2 0 0 0-1.143-.746 3.9 3.9 0 0 0-1.477-.266h-2.043v7.248zm8.743-9.636h9.054v2.352h-6.442v2.44h5.668v2.351h-5.668v2.525h6.527v2.354h-9.139zm17.145 12.23a6.3 6.3 0 0 1-2.458-.48 6.1 6.1 0 0 1-1.957-1.314 6 6 0 0 1-1.288-1.968 6.3 6.3 0 0 1-.465-2.421v-.035a6.3 6.3 0 0 1 .465-2.414 6.2 6.2 0 0 1 1.288-1.974 6 6 0 0 1 1.975-1.34c.805-.334 1.67-.5 2.54-.49a8 8 0 0 1 1.54.137q.65.125 1.262.378.557.233 1.049.583.476.342.894.756l-1.683 1.941a6.5 6.5 0 0 0-1.435-.996 3.7 3.7 0 0 0-1.641-.36 3.33 3.33 0 0 0-2.51 1.101 3.8 3.8 0 0 0-.72 1.193 4 4 0 0 0-.257 1.453v.035c-.004.498.083.992.257 1.46.161.44.403.847.713 1.2a3.27 3.27 0 0 0 2.517 1.117 3.7 3.7 0 0 0 1.743-.378c.514-.28.991-.626 1.418-1.028l1.681 1.7q-.445.484-.96.891a5.64 5.64 0 0 1-2.389 1.111c-.52.098-1.05.146-1.58.142m7.163-12.23h2.647V20.26h-2.647zm9.946 12.196a8 8 0 0 1-2.696-.47 7.1 7.1 0 0 1-2.405-1.456l1.563-1.87a8 8 0 0 0 1.691 1.066 4.5 4.5 0 0 0 1.9.396c.446.025.89-.08 1.278-.305a.95.95 0 0 0 .456-.833v-.032a1.05 1.05 0 0 0-.095-.455.95.95 0 0 0-.362-.37 3.8 3.8 0 0 0-.741-.347 15 15 0 0 0-1.23-.359 14 14 0 0 1-1.654-.497 4.6 4.6 0 0 1-1.257-.676 2.7 2.7 0 0 1-.8-1.007 3.5 3.5 0 0 1-.286-1.493v-.034a3.5 3.5 0 0 1 .306-1.488c.204-.438.498-.827.862-1.143.39-.33.84-.582 1.325-.74a5.4 5.4 0 0 1 1.7-.256 7.2 7.2 0 0 1 2.428.395 7.1 7.1 0 0 1 2.038 1.133l-1.374 1.994a9 9 0 0 0-1.58-.868 4.1 4.1 0 0 0-1.547-.318 1.88 1.88 0 0 0-1.16.301.92.92 0 0 0-.387.749v.035a1.1 1.1 0 0 0 .112.506c.097.164.237.298.407.385q.381.21.8.328.507.153 1.285.36.832.214 1.626.54c.437.177.844.421 1.206.723.319.269.572.607.74.99.177.428.262.89.25 1.354v.034c.01.547-.1 1.09-.325 1.59a3.2 3.2 0 0 1-.904 1.165 4 4 0 0 1-1.384.722 6 6 0 0 1-1.786.25m6.82-12.196h2.645V20.26H90.65zm11.492 12.23a6.6 6.6 0 0 1-2.56-.49 6.4 6.4 0 0 1-2.017-1.322 5.85 5.85 0 0 1-1.322-1.96 6.2 6.2 0 0 1-.474-2.412v-.034a6.1 6.1 0 0 1 .481-2.414 6.2 6.2 0 0 1 1.332-1.976 6.2 6.2 0 0 1 2.027-1.338 6.95 6.95 0 0 1 5.129 0 6.3 6.3 0 0 1 2.017 1.322 5.95 5.95 0 0 1 1.323 1.956c.318.765.479 1.586.472 2.415v.035a6.155 6.155 0 0 1-3.84 5.729 6.7 6.7 0 0 1-2.568.489m.034-2.441c.502.006 1-.093 1.461-.29a3.35 3.35 0 0 0 1.143-.808 3.8 3.8 0 0 0 .74-1.195c.179-.463.268-.955.264-1.45v-.034c.004-.5-.086-.996-.264-1.463a3.6 3.6 0 0 0-1.916-2.017 3.5 3.5 0 0 0-1.461-.3 3.6 3.6 0 0 0-1.47.292 3.4 3.4 0 0 0-1.133.809 3.8 3.8 0 0 0-.737 1.192c-.18.463-.27.955-.266 1.452v.035c-.003.5.087.995.265 1.461a3.67 3.67 0 0 0 1.906 2.019c.463.203.965.304 1.47.296m8.727-9.788h2.439l5.635 7.402V8.237h2.609v12.022h-2.249l-5.824-7.644v7.644h-2.61zm15.544.005h8.634v1.254h-7.279v4.29h6.509v1.237h-6.509v5.237h-1.355zm10.479 6.044v-.034A6.135 6.135 0 0 1 143.038 8a6.13 6.13 0 0 1 5.704 3.842c.304.755.454 1.563.442 2.377v.034a6.134 6.134 0 0 1-6.111 6.252 6.13 6.13 0 0 1-5.704-3.843 6.1 6.1 0 0 1-.442-2.376m10.85 0v-.034a4.77 4.77 0 0 0-1.319-3.484 4.8 4.8 0 0 0-3.42-1.479 4.724 4.724 0 0 0-4.705 4.93v.034a4.787 4.787 0 0 0 4.741 4.964 4.72 4.72 0 0 0 3.402-1.464 4.72 4.72 0 0 0 1.301-3.467m3.751 0v-.034a6.05 6.05 0 0 1 3.717-5.747 6.1 6.1 0 0 1 2.362-.469 6.24 6.24 0 0 1 4.684 1.907l-.926.995a5.22 5.22 0 0 0-3.779-1.649 4.72 4.72 0 0 0-3.371 1.478 4.7 4.7 0 0 0-1.279 3.452v.034a4.76 4.76 0 0 0 1.277 3.463 4.73 4.73 0 0 0 3.373 1.499 5.23 5.23 0 0 0 3.883-1.736l.893.877a6.26 6.26 0 0 1-4.807 2.11 5.997 5.997 0 0 1-6.027-6.18m13.021.945V8.242h1.356v6.902c0 2.592 1.392 4.051 3.674 4.051 2.216 0 3.622-1.34 3.622-3.964V8.242h1.358v6.885c0 3.502-2.011 5.324-5.013 5.324-2.971 0-4.997-1.823-4.997-5.22m12.439 3.28.84-.995a5.74 5.74 0 0 0 4.119 1.7c1.616 0 2.679-.86 2.679-2.046v-.034c0-1.118-.6-1.753-3.125-2.284-2.763-.599-4.034-1.492-4.034-3.468v-.035c0-1.885 1.665-3.278 3.947-3.278a6.27 6.27 0 0 1 4.226 1.476l-.791 1.049a5.28 5.28 0 0 0-3.467-1.306c-1.562 0-2.557.859-2.557 1.94v.035c0 1.134.616 1.767 3.259 2.337 2.68.582 3.916 1.561 3.916 3.395v.038c0 2.061-1.717 3.4-4.104 3.4a7.04 7.04 0 0 1-4.908-1.925"/><path fill="#0658fa" d="M0 15.537v10.357l9.035 5.18V10.357z"/><defs><linearGradient id="a" x1="9.044" x2="18.063" y1="-.043" y2="15.579" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".234" stop-color="#fdfdfe"/><stop offset=".37" stop-color="#f4f7fa"/><stop offset=".482" stop-color="#e6ebf3"/><stop offset=".58" stop-color="#d2dce9"/><stop offset=".669" stop-color="#b8c7dc"/><stop offset=".752" stop-color="#98aecc"/><stop offset=".83" stop-color="#7290b9"/><stop offset=".904" stop-color="#466da3"/><stop offset=".973" stop-color="#16478b"/><stop offset="1" stop-color="#003680"/></linearGradient></defs></svg></template>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Responsive scaling — preserves spread proportions
+  function scaleSpread() {
+    const s = Math.min(window.innerWidth / 1588, window.innerHeight / 1123) * 0.92;
+    document.getElementById('spreadWrapper').style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', scaleSpread);
+  scaleSpread();
+
+  // Clone logo SVG into logo divs
+  document.querySelectorAll('.logo-left').forEach(el => {
+    el.appendChild(document.getElementById('logo-svg').content.cloneNode(true));
+  });
+
+  // Screenshot drop zone — drag a new image onto the zone to replace the placeholder
+  const zone = document.getElementById('screenshotZone');
+  const screenshotImg = document.getElementById('screenshotImg');
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.outline = '2px dashed var(--blue)'; });
+  zone.addEventListener('dragleave', () => { zone.style.outline = ''; });
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.style.outline = '';
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => { screenshotImg.src = ev.target.result; };
+    reader.readAsDataURL(file);
+  });
+
+  // ── Screenshot zone repositioning + resizing ───────────────────────────────
+  (function enableInteraction() {
+    const wrapper = document.getElementById('spreadWrapper');
+
+    function getScale() {
+      return parseFloat(wrapper.style.transform.replace('scale(', '')) || 1;
+    }
+
+    // Drag-to-reposition
+    let dragging = false, startMX, startMY, startLeft, startTop;
+
+    zone.style.cursor = 'grab';
+
+    const handle = document.createElement('div');
+    handle.textContent = '⠿ drag to reposition';
+    Object.assign(handle.style, {
+      position: 'absolute', top: '8px', left: '8px', zIndex: '10',
+      background: 'rgba(6,88,250,0.85)', color: '#fff',
+      fontSize: '11px', fontWeight: '600', padding: '4px 8px',
+      borderRadius: '4px', pointerEvents: 'none', opacity: '0',
+      transition: 'opacity 0.15s', userSelect: 'none',
+      fontFamily: 'Inter, sans-serif'
+    });
+    zone.appendChild(handle);
+    zone.addEventListener('mouseenter', () => { handle.style.opacity = '1'; });
+    zone.addEventListener('mouseleave', () => { if (!dragging && !resizing) handle.style.opacity = '0'; });
+
+    zone.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('resize-handle')) return; // let resize handle it
+      dragging = true;
+      zone.style.cursor = 'grabbing';
+      const s = getScale();
+      startMX   = e.clientX / s;
+      startMY   = e.clientY / s;
+      startLeft = parseFloat(zone.style.left  || getComputedStyle(zone).left);
+      startTop  = parseFloat(zone.style.top   || getComputedStyle(zone).top);
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const s = getScale();
+      zone.style.left = (startLeft + e.clientX / s - startMX) + 'px';
+      zone.style.top  = (startTop  + e.clientY / s - startMY) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      zone.style.cursor = 'grab';
+      handle.style.opacity = '0';
+      logState();
+    });
+
+    // Resize via corner handles
+    let resizing = false, activeCorner, startRMX, startRMY, startW, startRLeft, startRTop;
+
+    zone.querySelectorAll('.resize-handle').forEach(h => {
+      h.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        resizing = true;
+        activeCorner = h.dataset.corner;
+        const s = getScale();
+        startRMX   = e.clientX / s;
+        startRMY   = e.clientY / s;
+        startW     = parseFloat(getComputedStyle(zone).width);
+        startRLeft = parseFloat(zone.style.left || getComputedStyle(zone).left);
+        startRTop  = parseFloat(zone.style.top  || getComputedStyle(zone).top);
+        e.preventDefault();
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!resizing) return;
+      const s  = getScale();
+      const dx = e.clientX / s - startRMX;
+      const dy = e.clientY / s - startRMY; // kept for future height-lock if needed
+
+      let newW = startW;
+
+      if (activeCorner === 'se' || activeCorner === 'ne') {
+        newW = Math.max(100, startW + dx);
+        zone.style.width = newW + 'px';
+      }
+      if (activeCorner === 'sw' || activeCorner === 'nw') {
+        newW = Math.max(100, startW - dx);
+        const newLeft = startRLeft + (startW - newW);
+        zone.style.width = newW + 'px';
+        zone.style.left  = newLeft + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!resizing) return;
+      resizing = false;
+      logState();
+    });
+
+    function logState() {
+      const finalLeft  = Math.round(parseFloat(zone.style.left));
+      const finalTop   = Math.round(parseFloat(zone.style.top));
+      const finalWidth = Math.round(parseFloat(zone.style.width || getComputedStyle(zone).width));
+      console.log(`SCREENSHOT_POSITION: left=${finalLeft}px; top=${finalTop}px; width=${finalWidth}px`);
+    }
+  })();
+
+  if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+</script>
+
+</body>
+</html>

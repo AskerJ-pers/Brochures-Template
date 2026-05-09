@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform spread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0658fa;
+    --blue-dark: #0a0756;
+    --purple: #8000ff;
+    --black: #000000;
+    --bg-grey: #ecedf0;
+    --white: #ffffff;
+    --text-grey: #7f7f7f;
+    --border: #d4d6dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #d0d0d0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Spread shell ──────────────────────────────────────────── */
+
+  .spread-wrapper {
+    width: 1588px;
+    height: 1123px;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+
+  .spread {
+    width: 1588px;
+    height: 1123px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ─── Left page — white ─────────────────────────────────────── */
+
+  .page-left {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Main text block — single InDesign text box
+     Source: x 66.672pt→88.88px, y 97.874pt→130.47px
+             w 461.931pt→615.76px, h 232.126pt→309.52px */
+  .left-text-block {
+    position: absolute;
+    left: 88.88px;
+    top: 130.47px;
+    width: 615.76px;
+    height: 309.52px;
+  }
+
+  /* Pointer label — 11pt→14.66px, leading 15pt→20px */
+  .left-overline {
+    display: block;
+    font-size: 14.66px;
+    font-weight: 400;
+    color: var(--text-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 20px;
+  }
+
+  /* Headline block — 26pt→34.66px, leading 32pt→42.66px
+     Line 1 black, line 2 #c2c2c2 — same size, same text box */
+  .left-headline {
+    display: block;
+    font-size: 34.66px;
+    font-weight: 300;
+    line-height: 42.66px;
+    margin-top: 32px;
+  }
+
+  .left-headline .line-dark  { color: var(--black); }
+  .left-headline .line-light { color: rgba(0, 0, 0, 0.6); }
+
+  /* Body copy — 11pt→14.66px, leading 15pt→20px */
+  .left-body {
+    display: block;
+    font-size: 14.66px;
+    font-weight: 400;
+    color: var(--text-grey);
+    line-height: 20px;
+    margin-top: 32px;
+  }
+
+  .left-body p + p {
+    margin-top: 20px;
+  }
+
+
+  /* ─── Module map image ──────────────────────────────────────── */
+
+  /* "One unified platform" title
+     Source: x 66.299pt→88.38px, y 343.803pt→458.29px
+             size 26pt→34.66px, leading 32pt→42.66px */
+  .left-headline-2 {
+    position: absolute;
+    left: 88.38px;
+    top: 488px;
+    font-size: 34.66px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 42.66px;
+  }
+
+  /* Module map image
+     Source: x 56.693pt→75.57px, y 409.031pt→545.65px
+             w 485.827pt→647.62px, h 441.394pt→588.38px */
+  .module-map {
+    position: absolute;
+    left: 88.88px;
+    top: 545.65px;
+    width: 629.16px;
+    height: 588.38px;
+    overflow: hidden;
+  }
+
+  .module-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top left;
+    display: block;
+  }
+
+  /* ─── Right page — white ────────────────────────────────────── */
+
+  .page-right {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Grey image background — fixed, full width, from InDesign source
+     Source: x 595.276pt→0px (right page origin), y 0, w 595.276pt→793.70px, h 442.205pt→589.46px */
+  .image-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 793.70px;
+    height: 589.46px;
+    background: var(--bg-grey);
+  }
+
+  .image-bg img {
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .drop-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-grey);
+    pointer-events: none;
+  }
+
+  /* Right page text block — single InDesign text box
+     Source: x (651.969−595.28)pt→75.57px, y 493.228pt→657.77px
+             w 476.22pt→634.98px, h 269.055pt→358.75px */
+  .right-text-block {
+    position: absolute;
+    left: 75.57px;
+    top: 657.77px;
+    width: 634.98px;
+    height: 358.75px;
+  }
+
+  /* Pointer: 9pt→12px, leading 10.8pt→14.4px */
+  .right-overline {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 14.4px;
+  }
+
+  /* Headline: 26pt→34.66px, leading 32pt→42.66px */
+  .right-headline {
+    display: block;
+    font-size: 34.66px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 42.66px;
+    margin-top: 16px;
+  }
+
+  /* Body: 11pt→14.66px, leading 15pt→20px */
+  .right-body {
+    display: block;
+    font-size: 14.66px;
+    font-weight: 400;
+    color: var(--text-grey);
+    line-height: 20px;
+    margin-top: 32px;
+  }
+
+  .right-body p + p {
+    margin-top: 20px;
+  }
+
+  /* Footer — same position/size as benefits spread
+     Source: x (911.464−595.28)pt→421.49px, y 789.449pt→1052.47px
+             w 222.52pt→296.82px, h 24.094pt→32.13px */
+  .right-footer {
+    position: absolute;
+    left: 421.49px;
+    top: 1052.47px;
+    width: 296.82px;
+    height: 32.13px;
+    display: flex;
+    align-items: center;
+    font-size: 10.67px;
+    font-weight: 400;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
+  }
+
+  .footer-label  { color: #c2c2c2; }
+  .footer-module { color: var(--black); }
+
+  /* ─── Contenteditable indicators ────────────────────────────── */
+
+  [contenteditable]:hover {
+    outline: 1px dashed var(--border);
+    border-radius: 2px;
+    cursor: text;
+  }
+  [contenteditable]:focus {
+    outline: 1px dashed var(--blue);
+    border-radius: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="spread-wrapper" id="spreadWrapper">
+  <div class="spread">
+
+    <!-- ── Left page — white ─────────────────────────────────── -->
+    <div class="page-left">
+
+      <div class="left-text-block">
+        <span class="left-overline" contenteditable="true">One unified platform</span>
+        <span class="left-headline">
+          <span class="line-dark" contenteditable="true">Build your perfect GRC solution</span><br>
+          <span class="line-light" contenteditable="true">Your needs, your choice</span>
+        </span>
+        <div class="left-body">
+          <p contenteditable="true">Combine the [Your Company] Information Security module with ERM, TPRM, Data Privacy, and Op Res, or any other capabilities you need to deliver integrated assurance across your organisation with our "Total GRC" approach.</p>
+          <p contenteditable="true">Our agile no-code platform adapts to your frameworks and processes, so you can pick and choose the solutions you need.</p>
+        </div>
+      </div>
+
+      <div class="left-headline-2" contenteditable="true">One unified platform</div>
+
+      <!-- Module map -->
+      <div class="module-map">
+        <img src="../../../images/modules/module-map/module-map.svg" alt="[Your Company] module map">
+      </div>
+
+    </div><!-- /page-left -->
+
+    <!-- ── Right page — white ────────────────────────────────── -->
+    <div class="page-right">
+
+      <!-- Feature spotlight image zone — always leave as blank drop zone -->
+      <div class="image-bg" id="imageDrop">
+        <div class="drop-label">Drop screenshot</div>
+      </div>
+
+      <div class="right-text-block">
+        <span class="right-overline" contenteditable="true">Business impact assessments</span>
+        <span class="right-headline" contenteditable="true">Incident &amp; breach management</span>
+        <div class="right-body">
+          <p contenteditable="true">Bring GRC data out of siloes and into a transparent platform with complete audit-trails, so you're always prepared to prove compliance.</p>
+          <p contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+      </div>
+
+      <div class="right-footer">
+        <span class="footer-label" contenteditable="true">Solution Brief I&nbsp;</span><span class="footer-module" contenteditable="true">ISMS Solutions</span>
+      </div>
+
+    </div><!-- /page-right -->
+
+  </div><!-- /spread -->
+</div><!-- /spread-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Responsive scaling
+  function scaleSpread() {
+    const s = Math.min(window.innerWidth / 1588, window.innerHeight / 1123) * 0.92;
+    document.getElementById('spreadWrapper').style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', scaleSpread);
+  scaleSpread();
+
+  const imageDrop = document.getElementById('imageDrop');
+  imageDrop.addEventListener('dragover', e => { e.preventDefault(); imageDrop.style.outline = '2px dashed var(--blue)'; });
+  imageDrop.addEventListener('dragleave', () => { imageDrop.style.outline = ''; });
+  imageDrop.addEventListener('drop', e => {
+    e.preventDefault();
+    imageDrop.style.outline = '';
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      let img = imageDrop.querySelector('img');
+      if (!img) { img = document.createElement('img'); imageDrop.appendChild(img); }
+      img.src = ev.target.result;
+      const label = imageDrop.querySelector('.drop-label');
+      if (label) label.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+  let _fileHandle = null;
+  document.addEventListener('keydown', async e => {
+    if (!(e.code === 'KeyS' && e.altKey && (e.metaKey || e.ctrlKey))) return;
+    e.preventDefault();
+    try {
+      if (!_fileHandle) {
+        _fileHandle = await window.showSaveFilePicker({
+          suggestedName: decodeURIComponent(window.location.pathname.split("/").pop()) || "index.html",
+          types: [{ description: 'HTML file', accept: { 'text/html': ['.html'] } }]
+        });
+      }
+      const writable = await _fileHandle.createWritable();
+      await writable.write(document.documentElement.outerHTML);
+      await writable.close();
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Save failed:', err);
+    }
+  });
+</script>
+
+</body>
+</html>

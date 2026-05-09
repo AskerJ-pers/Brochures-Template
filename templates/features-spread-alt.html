@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features spread (alt)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0658fa;
+    --blue-dark: #0a0756;
+    --black: #000000;
+    --bg-grey: #ecedf0;
+    --white: #ffffff;
+    --text-grey: #7f7f7f;
+    --border: #d4d6dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #d0d0d0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Spread shell ──────────────────────────────────────────── */
+
+  .spread-wrapper {
+    width: 1588px;
+    height: 1123px;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+
+  .spread {
+    width: 1588px;
+    height: 1123px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ─── Both pages ────────────────────────────────────────────── */
+
+  .page-left, .page-right {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-left  { background: var(--white); }
+  .page-right { background: #ebebf1; }
+
+  /* ─── Feature elements — left page ─────────────────────────── */
+
+  /* Shared image style — w 229.606pt→306.07px, h 194.803pt→259.67px */
+  .feat-img {
+    position: absolute;
+    width: 306.07px;
+    height: 259.67px;
+    background: #ebebf1;
+    overflow: hidden;
+  }
+
+  .feat-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .drop-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-grey);
+    pointer-events: none;
+  }
+
+  .feat-text { position: absolute; }
+
+  .feat-title {
+    font-size: 25.33px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 30.4px;
+    width: 302.14px;
+  }
+
+  .feat-body {
+    font-size: 14.66px;
+    font-weight: 400;
+    color: var(--text-grey);
+    line-height: 20px;
+    width: 302.14px;
+    margin-top: 20px;
+  }
+
+  /* ─── Left page row positions (from resilience-spread) ─────── */
+
+  .feat-img-1  { left: 75.57px;  top: 102.60px; }
+  .feat-text-1 { left: 414.61px; top: 102.60px; }
+
+  .feat-img-2  { left: 75.57px;  top: 432.52px; }
+  .feat-text-2 { left: 414.68px; top: 432.52px; }
+
+  .feat-img-3  { left: 76.52px;  top: 759.98px; }
+  .feat-text-3 { left: 414.61px; top: 759.98px; }
+
+  /* ─── Left page dividers ────────────────────────────────────── */
+
+  .feat-divider {
+    position: absolute;
+    width: 642.17px;
+    height: 0.33px;
+    background: var(--black);
+  }
+
+  .feat-divider-1 { left: 75.57px; top:  75.57px; }
+  .feat-divider-2 { left: 75.57px; top: 405.49px; }
+  .feat-divider-3 { left: 75.57px; top: 732.95px; }
+
+  /* ─── Right page — full-bleed image zone ────────────────────── */
+
+  .full-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 794px;
+    height: 1123px;
+    background: #ebebf1;
+    overflow: hidden;
+  }
+
+  .full-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ─── Contenteditable ───────────────────────────────────────── */
+
+  [contenteditable]:hover {
+    outline: 1px dashed var(--border);
+    border-radius: 2px;
+    cursor: text;
+  }
+  [contenteditable]:focus {
+    outline: 1px dashed var(--blue);
+    border-radius: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="spread-wrapper" id="spreadWrapper">
+  <div class="spread">
+
+    <!-- ── Left page ─────────────────────────────────────────── -->
+    <div class="page-left">
+
+      <!-- Feature row 1 -->
+      <div class="feat-divider feat-divider-1"></div>
+      <div class="feat-img feat-img-1"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-1">
+        <div class="feat-title" contenteditable="true">Feature title</div>
+        <div class="feat-body" contenteditable="true">Feature description goes here.</div>
+      </div>
+
+      <!-- Feature row 2 -->
+      <div class="feat-divider feat-divider-2"></div>
+      <div class="feat-img feat-img-2"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-2">
+        <div class="feat-title" contenteditable="true">Feature title</div>
+        <div class="feat-body" contenteditable="true">Feature description goes here.</div>
+      </div>
+
+      <!-- Feature row 3 -->
+      <div class="feat-divider feat-divider-3"></div>
+      <div class="feat-img feat-img-3"><div class="drop-label">Drop screenshot</div></div>
+      <div class="feat-text feat-text-3">
+        <div class="feat-title" contenteditable="true">Feature title</div>
+        <div class="feat-body" contenteditable="true">Feature description goes here.</div>
+      </div>
+
+    </div><!-- /page-left -->
+
+    <!-- ── Right page — full-bleed image ────────────────────── -->
+    <div class="page-right">
+
+      <div class="full-image">
+        <img src="../../../images/stock/brochure-filler-page.png" alt="">
+      </div>
+
+    </div><!-- /page-right -->
+
+  </div><!-- /spread -->
+</div><!-- /spread-wrapper -->
+
+<script>
+  function scaleSpread() {
+    const s = Math.min(window.innerWidth / 1588, window.innerHeight / 1123) * 0.92;
+    document.getElementById('spreadWrapper').style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', scaleSpread);
+  scaleSpread();
+
+  document.querySelectorAll('.feat-img').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.outline = '2px dashed var(--blue)'; });
+    zone.addEventListener('dragleave', () => { zone.style.outline = ''; });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.style.outline = '';
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        let img = zone.querySelector('img');
+        if (!img) { img = document.createElement('img'); zone.appendChild(img); }
+        img.src = ev.target.result;
+        const label = zone.querySelector('.drop-label');
+        if (label) label.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
+
+</body>
+</html>

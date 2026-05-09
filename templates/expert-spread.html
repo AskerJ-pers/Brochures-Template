@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expert spread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0658fa;
+    --blue-dark: #0a0756;
+    --purple: #8000ff;
+    --black: #000000;
+    --bg-grey: #ecedf0;
+    --white: #ffffff;
+    --text-grey: #7f7f7f;
+    --border: #d4d6dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #d0d0d0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─── Spread shell ──────────────────────────────────────────── */
+
+  .spread-wrapper {
+    width: 1588px;
+    height: 1123px;
+    transform-origin: center center;
+    flex-shrink: 0;
+  }
+
+  .spread {
+    width: 1588px;
+    height: 1123px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ─── Both pages ────────────────────────────────────────────── */
+
+  .page-left, .page-right {
+    width: 794px;
+    height: 1123px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-left  { background: #0a0756; }
+  .page-right { background: #ebebf1; }
+
+  /* ─── Left page text block ──────────────────────────────────── */
+
+  /* Single InDesign text box — TBD coords, using platform-spread
+     left page as placeholder: left 88.88px, top 130.47px */
+  /* Source: x 56.818pt→75.78px, y 111.496pt→148.62px,
+     w 489.833pt→653.18px, h 236.457pt→315.30px */
+  .left-text-block {
+    position: absolute;
+    left: 75.78px;
+    top: 148.62px;
+    width: 653.18px;
+    height: 315.30px;
+  }
+
+  /* Divider line
+     x 56.818pt→75.78px, y 88.583pt→118.08px, length 481.89pt→642.36px, stroke 0.25pt→0.33px */
+  .left-divider {
+    position: absolute;
+    left: 75.78px;
+    top: 118.08px;
+    width: 642.36px;
+    height: 0.33px;
+    background: var(--white);
+  }
+
+  /* Headline: 26pt→34.66px, leading 32pt→42.66px */
+  .left-headline {
+    display: block;
+    font-size: 34.66px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 42.66px;
+  }
+
+  .left-body {
+    display: block;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 32px;
+  }
+
+  /* First paragraph: 14pt→18.66px, leading 22pt→29.33px */
+  .left-body p:first-child {
+    font-size: 18.66px;
+    line-height: 29.33px;
+  }
+
+  /* Remaining paragraphs: 10pt→13.33px, leading 15pt→20px */
+  .left-body p:not(:first-child) {
+    font-size: 13.33px;
+    line-height: 20px;
+  }
+
+  .left-body p + p { margin-top: 20px; }
+
+  /* ─── Left page image zone ──────────────────────────────────── */
+  /* Source: x 0, y 387.937pt→517.32px, w 595.984pt→794.55px, h 345.559pt→460.63px */
+  .left-image {
+    position: absolute;
+    left: 0;
+    top: 517.32px;
+    width: 794.55px;
+    height: 460.63px;
+    overflow: hidden;
+  }
+
+  .left-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ─── Left page footer banner ───────────────────────────────── */
+  /* Starts immediately below image zone (517.32 + 460.63 = 977.95px) */
+  .left-footer-banner {
+    position: absolute;
+    left: 0;
+    top: 977.95px;
+    width: 794px;
+    height: 145.05px;
+    background: var(--white);
+  }
+
+  /* Award logo row
+     y 763.812pt→1018.56px from page top = 40.61px from banner top
+     spans x 75.52px → 659.11px, max-height 68.63px */
+  .award-logos {
+    position: absolute;
+    left: 75.52px;
+    top: 40.61px;
+    width: 653.18px;
+    height: 68.63px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .award-logos img {
+    max-height: 68.63px;
+    max-width: 117.77px;
+    width: auto;
+    height: auto;
+    display: block;
+    flex-shrink: 1;
+  }
+
+  /* ─── Right page — product image zone ───────────────────────── */
+
+  .screenshot-zone {
+    position: absolute;
+    left: -39px;
+    top: 181px;
+    width: 873px;
+    background: transparent;
+    cursor: grab;
+  }
+
+  .screenshot-zone img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--blue);
+    border: 2px solid #fff;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 20;
+  }
+  .screenshot-zone:hover .resize-handle { opacity: 1; }
+  .resize-handle.nw { top: -6px;  left: -6px;  cursor: nw-resize; }
+  .resize-handle.ne { top: -6px;  right: -6px; cursor: ne-resize; }
+  .resize-handle.sw { bottom: -6px; left: -6px;  cursor: sw-resize; }
+  .resize-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+
+  /* ─── Footer ────────────────────────────────────────────────── */
+
+  .right-footer {
+    position: absolute;
+    left: 421.49px;
+    top: 1052.47px;
+    width: 296.82px;
+    height: 32.13px;
+    display: flex;
+    align-items: center;
+    font-size: 10.67px;
+    font-weight: 400;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
+  }
+
+  .footer-label  { color: #c2c2c2; }
+  .footer-module { color: var(--black); }
+
+  /* ─── Contenteditable ───────────────────────────────────────── */
+
+  [contenteditable]:hover {
+    outline: 1px dashed var(--border);
+    border-radius: 2px;
+    cursor: text;
+  }
+  [contenteditable]:focus {
+    outline: 1px dashed var(--blue);
+    border-radius: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="spread-wrapper" id="spreadWrapper">
+  <div class="spread">
+
+    <!-- ── Left page ─────────────────────────────────────────── -->
+    <div class="page-left">
+
+      <div class="left-divider"></div>
+
+      <div class="left-text-block">
+        <span class="left-headline" contenteditable="true">Built by GRC experts, for GRC experts</span>
+        <div class="left-body">
+          <p contenteditable="true">[Your Company] is built, tested and implemented by experts with decades of experience across industries. We know the challenges you face, the tools you need and how to deliver the results you want.</p>
+          <p contenteditable="true">[Your Company] is an agile, no-code platform that allows organisations to create a tailored solution from more than 20 configurable modules, spanning audit, risk, compliance, governance, regulatory reporting and more.</p>
+          <p contenteditable="true">As a true 'Total GRC' platform, it brings all of your GRC processes into one unified system. At the centre is a focus on lean GRC, to help you eliminate inefficiencies and drive business growth.</p>
+        </div>
+      </div>
+
+      <!-- Fixed image — replace src once uploaded to repo -->
+      <div class="left-image">
+        <img src="../../../images/stock/brochure-expert-page.jpg" alt="">
+      </div>
+
+      <!-- White footer banner + award logos -->
+      <div class="left-footer-banner">
+        <div class="award-logos">
+          <img src="../../../images/awards/chartis-2025-risktech100.jpg" alt="Chartis RiskTech100 2025">
+          <img src="../../../images/awards/chartis-2024-AIrisktech50.jpg" alt="Chartis AI RiskTech50 2024">
+          <img src="../../../images/awards/regtech100-2026.png" alt="RegTech100 2026">
+          <img src="../../../images/awards/g2-evergreen-users.png" alt="G2 Evergreen Users">
+          <img src="../../../images/awards/g2-2025-high-performer.png" alt="G2 High Performer 2025">
+          <img src="../../../images/awards/g2-2025-high-performer-emea.png" alt="G2 High Performer EMEA 2025">
+        </div>
+      </div>
+
+    </div><!-- /page-left -->
+
+    <!-- ── Right page — full-page product image ─────────────────── -->
+    <div class="page-right">
+
+      <div class="screenshot-zone" id="screenshotZone">
+        <img src="../../../images/product/dashboards-double-tablet.png" alt="[Your Company] dashboards">
+        <div class="resize-handle nw" data-corner="nw"></div>
+        <div class="resize-handle ne" data-corner="ne"></div>
+        <div class="resize-handle sw" data-corner="sw"></div>
+        <div class="resize-handle se" data-corner="se"></div>
+      </div>
+
+      <div class="right-footer">
+        <span class="footer-label" contenteditable="true">Solution Brief I&nbsp;</span><span class="footer-module" contenteditable="true">ISMS Solutions</span>
+      </div>
+
+    </div><!-- /page-right -->
+
+  </div><!-- /spread -->
+</div><!-- /spread-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Responsive scaling
+  function scaleSpread() {
+    const s = Math.min(window.innerWidth / 1588, window.innerHeight / 1123) * 0.92;
+    document.getElementById('spreadWrapper').style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', scaleSpread);
+  scaleSpread();
+
+
+  // Screenshot drag + resize
+  (function() {
+    const zone = document.getElementById('screenshotZone');
+    const wrapper = document.getElementById('spreadWrapper');
+
+    function getScale() {
+      return parseFloat(wrapper.style.transform.replace('scale(', '')) || 1;
+    }
+
+    let dragging = false, startMX, startMY, startLeft, startTop;
+
+    zone.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('resize-handle')) return;
+      dragging = true;
+      zone.style.cursor = 'grabbing';
+      const s = getScale();
+      startMX   = e.clientX / s;
+      startMY   = e.clientY / s;
+      startLeft = parseFloat(zone.style.left || getComputedStyle(zone).left);
+      startTop  = parseFloat(zone.style.top  || getComputedStyle(zone).top);
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const s = getScale();
+      zone.style.left = (startLeft + e.clientX / s - startMX) + 'px';
+      zone.style.top  = (startTop  + e.clientY / s - startMY) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      zone.style.cursor = 'grab';
+      logState();
+    });
+
+    let resizing = false, activeCorner, startRMX, startW, startRLeft;
+
+    zone.querySelectorAll('.resize-handle').forEach(h => {
+      h.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        resizing = true;
+        activeCorner = h.dataset.corner;
+        const s = getScale();
+        startRMX   = e.clientX / s;
+        startW     = parseFloat(getComputedStyle(zone).width);
+        startRLeft = parseFloat(zone.style.left || getComputedStyle(zone).left);
+        e.preventDefault();
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!resizing) return;
+      const s = getScale(), dx = e.clientX / s - startRMX;
+      if (activeCorner === 'se' || activeCorner === 'ne') {
+        zone.style.width = Math.max(100, startW + dx) + 'px';
+      } else {
+        const newW = Math.max(100, startW - dx);
+        zone.style.width = newW + 'px';
+        zone.style.left  = (startRLeft + startW - newW) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!resizing) return;
+      resizing = false;
+      logState();
+    });
+
+    function logState() {
+      const l = Math.round(parseFloat(zone.style.left || 0));
+      const t = Math.round(parseFloat(zone.style.top  || 0));
+      const w = Math.round(parseFloat(zone.style.width || getComputedStyle(zone).width));
+      console.log(`SCREENSHOT_POSITION: left=${l}px; top=${t}px; width=${w}px`);
+    }
+  })();
+
+  if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+  let _fileHandle = null;
+  document.addEventListener('keydown', async e => {
+    if (!(e.code === 'KeyS' && e.altKey && (e.metaKey || e.ctrlKey))) return;
+    e.preventDefault();
+    try {
+      if (!_fileHandle) {
+        _fileHandle = await window.showSaveFilePicker({
+          suggestedName: decodeURIComponent(window.location.pathname.split("/").pop()) || "index.html",
+          types: [{ description: 'HTML file', accept: { 'text/html': ['.html'] } }]
+        });
+      }
+      const writable = await _fileHandle.createWritable();
+      await writable.write(document.documentElement.outerHTML);
+      await writable.close();
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Save failed:', err);
+    }
+  });
+</script>
+
+</body>
+</html>
