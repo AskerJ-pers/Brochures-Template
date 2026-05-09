@@ -228,19 +228,19 @@ All brochure pages MUST use the brand design system. Values come from `brand-sha
 
 ```css
 :root {
-  --blue: #0658fa;          /* Headlines, stat numbers, overlines, CTAs, accents */
-  --blue-dark: #0a0756;     /* Cover bottom sections (some brochure types) */
-  --purple: #8000ff;        /* Sparingly — secondary accent only */
-  --black: #000000;         /* Main body and heading text */
-  --bg-grey: #ecedf0;       /* Page backgrounds, panel backgrounds, card fills */
-  --bg-light-blue: #e7f1fd; /* Info cards, emphasis */
-  --white: #ffffff;          /* Page backgrounds, card fills */
-  --text-grey: #7f7f7f;     /* Body text */
-  --border: #d4d6dc;        /* Card borders and dividers */
+  --blue:          /* your primary accent — headlines, CTAs, icons, progress bar */;
+  --blue-dark:     /* your dark accent — closing slide / cover dark sections only */;
+  --purple:        /* your secondary accent — use sparingly */;
+  --black:         #000000;
+  --bg-grey:       /* your near-white panel background */;
+  --bg-light-blue: /* soft tint of your primary colour — info cards, emphasis */;
+  --white:         #ffffff;
+  --text-grey:     #7f7f7f;
+  --border:        #d4d6dc;
 }
 ```
 
-> **TODO:** Replace these values with your brand colours in `brand-shared/tokens.css`. All templates embed these variable names inline — only the values need to change.
+> **TODO:** Populate your brand colours in `brand-shared/tokens.css` by running `node setup.js` in the Brand-Shared repo, or by editing the values directly. All templates embed these variable names inline — only the values need to change.
 
 **Permitted raw hex exceptions — these two values only:**
 - `#808080` — subtitle and secondary headline colour
